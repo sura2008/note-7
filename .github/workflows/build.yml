@@ -64,8 +64,7 @@ jobs:
       - name: Install Windows dependencies (vcpkg)
         if: matrix.target == 'windows'
         run: |
-          # Use vcpkg to install dependencies. GitHub Windows runners have vcpkg pre-installed.
-          vcpkg install poppler[qt6] quazip ffmpeg openssl zlib --triplet x64-windows
+          vcpkg install poppler quazip[qt6] ffmpeg openssl zlib --triplet x64-windows
 
       - name: Configure CMake
         run: |
