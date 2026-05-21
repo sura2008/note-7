@@ -35,7 +35,8 @@ jobs:
         uses: jurplel/install-qt-action@v3
         with:
           version: ${{ matrix.qt_version }}
-          modules: 'qtwebengine qtmultimedia qt5compat qtsvg'
+          arch: ${{ matrix.target == 'windows' && 'win64_msvc2019_64' || '' }}
+          modules: 'qtwebengine qtmultimedia qt5compat'
 
       - name: Install Ubuntu dependencies
         if: matrix.target == 'linux'
