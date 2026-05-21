@@ -16,13 +16,13 @@ jobs:
       matrix:
         include:
           - os: ubuntu-24.04
-            qt_version: 6.8.1
+            qt_version: 6.7.2
             target: linux
           - os: windows-latest
-            qt_version: 6.8.1
+            qt_version: 6.7.2
             target: windows
           - os: macos-latest
-            qt_version: 6.8.1
+            qt_version: 6.7.2
             target: macos
 
     steps:
@@ -38,7 +38,7 @@ jobs:
           host: ${{ matrix.target == 'linux' && 'linux' || matrix.target == 'windows' && 'windows' || 'mac' }}
           target: 'desktop'
           arch: ${{ matrix.target == 'windows' && 'win64_msvc2022_64' || '' }}
-          modules: 'qtwebengine qtmultimedia qtsvg qt5compat'
+          modules: 'qtwebengine qtmultimedia qt5compat'
 
       - name: Install Ubuntu dependencies
         if: matrix.target == 'linux'
