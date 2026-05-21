@@ -79,6 +79,11 @@ UBMainWindow::UBMainWindow(QWidget *parent, Qt::WindowFlags flags)
 #endif
 
     UBShortcutManager::shortcutManager()->addMainActions(this);
+
+    boardToolBar->hide();
+    webToolBar->hide();
+    documentToolBar->hide();
+    tutorialToolBar->hide();
 }
 
 UBMainWindow::~UBMainWindow()

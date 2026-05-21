@@ -287,3 +287,80 @@ UBTGAdaptableText {
    border-radius : 10px; 
    padding: 2px;
 }
+
+/* --- Modern UI Overrides --- */
+
+QWidget#NxtPartTools, QWidget#NxtPartStyle, QWidget#NxtPartActions {
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 16px;
+}
+
+QToolButton {
+    border: none;
+    border-radius: 8px;
+    background: transparent;
+    padding: 4px;
+}
+
+QToolButton:hover {
+    background-color: #f1f5f9;
+}
+
+QToolButton:checked {
+    background-color: #eff6ff;
+    border: 1px solid #3b82f6;
+}
+
+QPushButton#StyleButton {
+    border: none;
+    border-radius: 8px;
+    background: transparent;
+    font-weight: bold;
+    color: #475569;
+}
+
+QPushButton#StyleButton:hover {
+    background-color: #f1f5f9;
+}
+
+QWidget#PopupContainer {
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+}
+
+QLabel#PopupTitle {
+    color: #64748b;
+    font-size: 12px;
+    font-weight: bold;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+}
+
+QPushButton#ColorSwatch {
+    border-radius: 15px;
+    border: 2px solid #f1f5f9;
+}
+
+QPushButton#ColorSwatch:hover {
+    border-color: #cbd5e1;
+}
+
+QPushButton#WidthButton {
+    padding: 6px 12px;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    background: #f8fafc;
+    color: #475569;
+}
+
+QPushButton#WidthButton:hover {
+    background: #f1f5f9;
+}
+
+QPushButton#WidthButton:checked {
+    background: #eff6ff;
+    border-color: #3b82f6;
+    color: #2563eb;
+}

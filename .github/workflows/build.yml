@@ -1,0 +1,89 @@
+name: Build OpenBoard
+
+on:
+  push:
+    branches: [ master, dev ]
+  pull_request:
+    branches: [ master, dev ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-24.04
+            qt_version: 6.8.1
+            target: linux
+          - os: windows-latest
+            qt_version: 6.8.1
+            target: windows
+          - os: macos-latest
+            qt_version: 6.8.1
+            target: macos
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Install Qt
+        uses: jurplel/install-qt-action@v3
+        with:
+          version: ${{ matrix.qt_version }}
+          host: ${{ matrix.target == 'linux' && 'linux' || matrix.target == 'windows' && 'windows' || 'mac' }}
+          target: 'desktop'
+          arch: ${{ matrix.target == 'windows' && 'win64_msvc2022_64' || '' }}
+          modules: 'qtwebengine qtmultimedia qtsvg qt5compat'
+
+      - name: Install Ubuntu dependencies
+        if: matrix.target == 'linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            libpoppler-qt6-dev \
+            libquazip1-qt6-dev \
+            libavformat-dev \
+            libavcodec-dev \
+            libavutil-dev \
+            libswscale-dev \
+            libswresample-dev \
+            libssl-dev \
+            zlib1g-dev \
+            libx11-dev \
+            libxtst-dev \
+            libxcb-cursor0
+
+      - name: Install macOS dependencies
+        if: matrix.target == 'macos'
+        run: |
+          brew install poppler-qt6 quazip ffmpeg openssl@3 zlib
+
+      - name: Install Windows dependencies (vcpkg)
+        if: matrix.target == 'windows'
+        run: |
+          # Use vcpkg to install dependencies. GitHub Windows runners have vcpkg pre-installed.
+          vcpkg install poppler[qt6] quazip ffmpeg openssl zlib --triplet x64-windows
+
+      - name: Configure CMake
+        run: |
+          cmake -B build \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DQT_VERSION=6 \
+            ${{ matrix.target == 'windows' && format('-DCMAKE_TOOLCHAIN_FILE={0}/scripts/buildsystems/vcpkg.cmake', env.VCPKG_INSTALLATION_ROOT) || '' }}
+
+      - name: Build
+        run: cmake --build build --config Release -j $(nproc 2>/dev/null || sysctl -n hw.ncpu 2>/dev/null || echo 2)
+
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: OpenBoard-${{ matrix.target }}
+          path: |
+            build/openboard
+            build/Release/openboard.exe
+            build/openboard.app

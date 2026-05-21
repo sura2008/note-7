@@ -47,6 +47,10 @@ target_sources(${PROJECT_NAME} PRIVATE
     UBMessageWindow.h
     UBMessagesDialog.cpp
     UBMessagesDialog.h
+    UBNxtBottomBar.cpp
+    UBNxtBottomBar.h
+    UBNxtPopupPanel.cpp
+    UBNxtPopupPanel.h
     UBMousePressFilter.cpp
     UBMousePressFilter.h
     UBPageNavigationWidget.cpp

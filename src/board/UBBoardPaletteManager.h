@@ -54,6 +54,7 @@ class UBMainWindow;
 class UBApplicationController;
 class UBStartupHintsPalette;
 class UBPageNavigationWidget;
+class UBNxtBottomBar;
 
 class UBBoardPaletteManager : public QObject
 {
@@ -107,6 +108,7 @@ class UBBoardPaletteManager : public QObject
         UBBoardController *mBoardControler;
 
         UBStylusPalette *mStylusPalette;
+        UBNxtBottomBar *mNxtBottomBar;
 
         UBZoomPalette *mZoomPalette;
 	UBStartupHintsPalette* mTipPalette;

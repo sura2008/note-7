@@ -49,6 +49,7 @@
 #include "gui/UBFavoriteToolPalette.h"
 #include "gui/UBStartupHintsPalette.h"
 #include "gui/UBPageNavigationWidget.h"
+#include "gui/UBNxtBottomBar.h"
 
 #include "web/UBWebController.h"
 
@@ -238,7 +239,11 @@ void UBBoardPaletteManager::setupPalettes()
     // Add the other palettes
     mStylusPalette = new UBStylusPalette(mContainer, UBSettings::settings()->appToolBarOrientationVertical->get().toBool() ? Qt::Vertical : Qt::Horizontal);
     connect(mStylusPalette, SIGNAL(stylusToolDoubleClicked(int)), UBApplication::boardController, SLOT(stylusToolDoubleClicked(int)));
-    mStylusPalette->show(); // always show stylus palette at startup
+    // mStylusPalette->show(); // Hiding legacy stylus palette
+    mStylusPalette->hide();
+
+    mNxtBottomBar = new UBNxtBottomBar(mContainer);
+    mNxtBottomBar->show();
 
     mZoomPalette = new UBZoomPalette(mContainer);
 
@@ -521,6 +526,11 @@ void UBBoardPaletteManager::containerResized()
         mStylusPalette->move(userLeft, userTop);
         mStylusPalette->adjustSizeAndPosition();
         mStylusPalette->initPosition();
+    }
+
+    if(mNxtBottomBar)
+    {
+        mNxtBottomBar->updatePosition();
     }
 
     if(mZoomPalette)
