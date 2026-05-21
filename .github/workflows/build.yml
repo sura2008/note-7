@@ -11,6 +11,8 @@ jobs:
   build:
     name: Build on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
+    env:
+      VCPKG_DEFAULT_BINARY_CACHE: ${{ github.workspace }}/vcpkg-cache
     strategy:
       fail-fast: false
       matrix:
@@ -61,10 +63,19 @@ jobs:
         run: |
           brew install poppler-qt6 quazip ffmpeg openssl@3 zlib
 
+      - name: Cache vcpkg binaries
+        if: matrix.target == 'windows'
+        uses: actions/cache@v4
+        with:
+          path: ${{ github.workspace }}/vcpkg-cache
+          key: ${{ runner.os }}-vcpkg-${{ hashFiles('.github/workflows/build.yml') }}
+          restore-keys: |
+            ${{ runner.os }}-vcpkg-
+
       - name: Install Windows dependencies (vcpkg)
         if: matrix.target == 'windows'
         run: |
-          vcpkg install poppler quazip ffmpeg openssl zlib --triplet x64-windows
+          vcpkg install poppler[core] quazip ffmpeg[core,avcodec,avformat,swresample,swscale] openssl zlib --triplet x64-windows
 
       - name: Configure CMake
         run: |
